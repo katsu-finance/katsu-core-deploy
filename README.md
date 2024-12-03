@@ -1,4 +1,4 @@
-# Aave V3 Deployments
+# Katsu V3 Deployments
 
 [![npm (scoped)](https://img.shields.io/npm/v/@aave/deploy-v3)](https://www.npmjs.com/package/@aave/deploy-v3)
 
