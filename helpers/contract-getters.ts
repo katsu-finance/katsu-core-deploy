@@ -36,6 +36,7 @@ import {
   UiPoolDataProviderV3,
   WalletBalanceProvider,
   UiIncentiveDataProviderV3,
+  MockPyth,
 } from "../typechain";
 import { tEthereumAddress } from "./types";
 import {
@@ -82,7 +83,7 @@ export const getERC20 = async (
   address: tEthereumAddress
 ): Promise<IERC20Detailed> =>
   getContract(
-    "@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed",
+    "@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed",
     address
   );
 
@@ -160,7 +161,7 @@ export const getIErc20Detailed = async (
   address: tEthereumAddress
 ): Promise<IERC20Detailed> =>
   getContract(
-    "@aave/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed",
+    "@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed",
     address
   );
 
@@ -187,6 +188,14 @@ export const getFallbackOracle = async (
     "PriceOracle",
     address || (await hre.deployments.get(FALLBACK_ORACLE_ID)).address
   );
+
+  export const getPyth = async (
+    address?: tEthereumAddress
+  ): Promise<MockPyth> =>
+    getContract(
+      "MockPyth",
+      address || (await hre.deployments.get("TestnetPricePyth-story")).address
+    );
 
 export const getMockFlashLoanReceiver = async (
   address?: tEthereumAddress

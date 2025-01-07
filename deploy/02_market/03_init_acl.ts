@@ -41,6 +41,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     ...COMMON_DEPLOY_PARAMS,
   });
 
+  console.log("deploy ACLManager arg:",addressesProviderArtifact.address);
+
   const aclManager = (
     await hre.ethers.getContractAt(
       aclManagerArtifact.abi,

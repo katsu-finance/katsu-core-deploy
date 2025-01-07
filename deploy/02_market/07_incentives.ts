@@ -68,6 +68,7 @@ const func: DeployFunction = async function ({
     args: [deployer],
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log("EmissionManager deploy arg:", deployer);
   const emissionManager = (await hre.ethers.getContractAt(
     emissionManagerArtifact.abi,
     emissionManagerArtifact.address
@@ -80,6 +81,7 @@ const func: DeployFunction = async function ({
     args: [emissionManagerArtifact.address],
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log("RewardsController deploy arg:", emissionManagerArtifact.address);
   const incentivesImpl = (await hre.ethers.getContractAt(
     incentivesImplArtifact.abi,
     incentivesImplArtifact.address
@@ -140,6 +142,7 @@ const func: DeployFunction = async function ({
       ],
       ...COMMON_DEPLOY_PARAMS,
     });
+    console.log("PullRewardsTransferStrategy deploy arg:", rewardsProxyAddress,incentivesEmissionManager,incentivesRewardsVault,);
     const stakedAaveAddress = isLive
       ? getParamPerNetwork(poolConfig.StkAaveProxy, network)
       : (await deployments.getOrNull(STAKE_AAVE_PROXY))?.address;
@@ -155,6 +158,7 @@ const func: DeployFunction = async function ({
         ],
         ...COMMON_DEPLOY_PARAMS,
       });
+      console.log("StakedTokenTransferStrategy deploy arg:", rewardsProxyAddress,incentivesEmissionManager,stakedAaveAddress);
     } else {
       console.log(
         "[WARNING] Missing StkAave address. Skipping StakedTokenTransferStrategy deployment."

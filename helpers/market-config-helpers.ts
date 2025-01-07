@@ -7,10 +7,12 @@ import {
   PoolConfiguration,
   IBaseConfiguration,
   ITokenAddress,
+  ITokenPriceId,
   tEthereumAddress,
   ICommonConfiguration,
   SubTokenOutput,
   AssetType,
+  eStoryNetwork,
 } from "./types";
 import AaveMarket from "../markets/aave";
 import EthereumV3Config from "../markets/ethereum";
@@ -22,12 +24,14 @@ import PolygonMarket from "../markets/polygon";
 import OptimisticConfig from "../markets/optimistic";
 import ArbitrumConfig from "../markets/arbitrum";
 import BaseConfig from "../markets/base";
+import StoryConfig from "../markets/story";
 import { isValidAddress } from "./utilities/utils";
 import { AaveProtocolDataProvider } from "../typechain";
 import {
   ATOKEN_PREFIX,
   STABLE_DEBT_PREFIX,
   TESTNET_PRICE_AGGR_PREFIX,
+  TESTNET_PRICE_PYTH_PREFIX,
   TESTNET_REWARD_TOKEN_PREFIX,
   TESTNET_TOKEN_PREFIX,
   TREASURY_PROXY_ID,
@@ -52,6 +56,8 @@ export enum ConfigNames {
   Ethereum = "Ethereum",
   Base = "Base",
   baseGoerli = "base-goerli",
+  Story = "story",
+  StoryTestnet = "story-testnet",
 }
 
 export const getParamPerNetwork = <T>(
@@ -119,6 +125,8 @@ export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
       return EthereumV3Config;
     case ConfigNames.Base:
       return BaseConfig;
+    case ConfigNames.Story:
+      return StoryConfig; 
     default:
       throw new Error(
         `Unsupported pool configuration: ${configName} is not one of the supported configs ${Object.values(
@@ -204,6 +212,19 @@ export const getReserveAddresses = async (
   }, {});
 };
 
+export const getPriceIdOracles = async (
+  poolConfig: IBaseConfiguration,
+  network: eNetwork
+) => {
+  console.log("[NOTICE] Using PriceId from configuration file");
+  console.log("network:",network);
+
+  return (
+    getParamPerNetwork<ITokenPriceId>(poolConfig.PriceId, network) || {}
+  );
+  
+};
+
 export const getSubTokensByPrefix = async (
   prefix: string
 ): Promise<SubTokenOutput[]> => {
@@ -278,6 +299,38 @@ export const getChainlinkOracles = async (
     acc[symbol] = allDeployments[key].address;
     return acc;
   }, {});
+};
+
+
+export const getPythOracles = async (
+  poolConfig: IBaseConfiguration,
+  network: eNetwork
+) => {
+  const isLive = hre.config.networks[network].live;
+  if (isLive) {
+    console.log("[NOTICE] Using Pyth from configuration file");
+
+    return (
+      getParamPerNetwork<tEthereumAddress>(
+        poolConfig.Pyth,
+        network
+      ) || {}
+    );
+  }
+   
+  // todo delete
+  console.log("network getPythOracles:",network);
+  console.log("getPythOracles config", getParamPerNetwork<tEthereumAddress>(
+    poolConfig.Pyth,
+    network
+  ) || {});
+
+  console.log(
+    "[WARNING] Using deployed Mock Price Pyth instead of Pyth from configuration file"
+  );
+  const allDeployments = await hre.deployments.all();
+
+  return allDeployments[TESTNET_PRICE_PYTH_PREFIX].address;
 };
 
 export const getTreasuryAddress = async (

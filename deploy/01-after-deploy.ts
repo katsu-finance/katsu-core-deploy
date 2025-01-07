@@ -5,7 +5,7 @@ import {
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { MARKET_NAME } from "../helpers/env";
-import { getPoolConfiguratorProxy, waitForTx } from "../helpers";
+import { getPoolConfiguratorProxy, waitForTx, getAaveOracle, getMintableERC20,getPyth} from "../helpers";
 
 /**
  * The following script runs after the deployment starts
@@ -46,6 +46,30 @@ const func: DeployFunction = async function ({
     const poolConfigurator = await getPoolConfiguratorProxy();
     await waitForTx(await poolConfigurator.setPoolPause(false));
     console.log("- Pool unpaused and accepting deposits.");
+
+    const aaveOracle = await getAaveOracle();
+    const daiToken = await getMintableERC20((await deployments.get("WIP-TestnetMintableERC20-story")).address);
+    const daiAToken = await getMintableERC20((await deployments.get("DAI-AToken-story")).address);
+    const linkVariableDebtTokenToken = await getMintableERC20((await deployments.get("LINK-VariableDebtToken-story")).address);
+    const decimal = await daiAToken.decimals();
+    const linkdecimal = await linkVariableDebtTokenToken.decimals();
+    console.log("daiAToken 的精度：",decimal);
+    console.log("linkdecimal 的精度：",decimal);
+    // const source = await aaveOracle.getSourceOfAsset(daiToken.address);
+
+    const pyth = await getPyth();
+
+    // const daiPyth = await getPyth();
+    const daiPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000005',60);
+    const ipPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000009',60);
+    // console.log("dai 的价格：",daiPrice);
+    // console.log("ip 的价格：",ipPrice);
+    // console.log("daiPyth 的地址",pyth.address);
+
+    // // console.log("dai 的source：",source);
+    // console.log("dai 的地址：",daiToken.address);
+    // console.log("aaveOracle 的地址", aaveOracle.address)
+    // console.log("dai 的价格：",await aaveOracle.getAssetPrice(daiToken.address));
   }
 
   if (process.env.TRANSFER_OWNERSHIP === "true") {

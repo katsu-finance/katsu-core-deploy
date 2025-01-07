@@ -20,6 +20,7 @@ const func: DeployFunction = async function ({
       ...COMMON_DEPLOY_PARAMS,
     }
   );
+  console.log("PoolAddressesProviderRegistry arg:",deployer)
 
   const registryInstance = (
     (await hre.ethers.getContractAt(

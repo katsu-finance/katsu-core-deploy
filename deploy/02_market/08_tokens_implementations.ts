@@ -44,7 +44,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
-
+  console.log(`AToken implementation deploy arg:`, poolAddress);
   const aToken = (await hre.ethers.getContractAt(
     aTokenArtifact.abi,
     aTokenArtifact.address
@@ -71,7 +71,7 @@ const func: DeployFunction = async function ({
       ...COMMON_DEPLOY_PARAMS,
     }
   );
-
+  console.log(`DelegationAwareAToken implementation deploy arg:`, poolAddress);
   const delegationAwareAToken = (await hre.ethers.getContractAt(
     delegationAwareATokenArtifact.abi,
     delegationAwareATokenArtifact.address
@@ -95,6 +95,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log(`StableDebtToken implementation deploy arg:`, poolAddress);
 
   const stableDebtToken = (await hre.ethers.getContractAt(
     stableDebtTokenArtifact.abi,
@@ -118,6 +119,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log(`VariableDebtToken implementation deploy arg:`, poolAddress);
 
   const variableDebtToken = (await hre.ethers.getContractAt(
     variableDebtTokenArtifact.abi,

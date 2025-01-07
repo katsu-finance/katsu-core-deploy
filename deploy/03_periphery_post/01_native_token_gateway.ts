@@ -44,6 +44,7 @@ const func: DeployFunction = async function ({
     from: deployer,
     args: [wrappedNativeTokenAddress, deployer, poolAddress],
   });
+  console.log("WrappedTokenGatewayV3 deploy arg:", wrappedNativeTokenAddress, deployer, poolAddress);
 };
 
 func.tags = ["periphery-post", "WrappedTokenGateway"];

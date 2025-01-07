@@ -51,6 +51,8 @@ const func: DeployFunction = async function ({
     ...COMMON_DEPLOY_PARAMS,
   });
 
+  console.log("Deployed Pool arg: ", addressesProviderAddress);
+
   // Initialize implementation
   const pool = await getPool(poolArtifact.address);
   await waitForTx(await pool.initialize(addressesProviderAddress));

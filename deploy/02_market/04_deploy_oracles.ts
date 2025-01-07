@@ -1,4 +1,4 @@
-import { getChainlinkOracles } from "../../helpers/market-config-helpers";
+import { getChainlinkOracles, getPythOracles} from "../../helpers/market-config-helpers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";
@@ -14,9 +14,10 @@ import {
   getParamPerNetwork,
   checkRequiredEnvironment,
   getReserveAddresses,
+  getPriceIdOracles,
 } from "../../helpers/market-config-helpers";
 import { eNetwork, ICommonConfiguration, SymbolMap } from "../../helpers/types";
-import { getPairsTokenAggregator } from "../../helpers/init-helpers";
+import { getPairsTokenAggregator,getPairsTokenPyth } from "../../helpers/init-helpers";
 import { parseUnits } from "ethers/lib/utils";
 import { MARKET_NAME } from "../../helpers/env";
 
@@ -42,19 +43,26 @@ const func: DeployFunction = async function ({
 
   const reserveAssets = await getReserveAddresses(poolConfig, network);
   const chainlinkAggregators = await getChainlinkOracles(poolConfig, network);
+  const pythConfig = await getPythOracles(poolConfig, network);
+  console.log("pythConfig:", pythConfig);
+  const priceIdConfig = await getPriceIdOracles(poolConfig, network);
+  console.log("priceIdConfig:", priceIdConfig);
+  
+  // const [assets, sources] = getPairsTokenAggregator(
+  //   reserveAssets,
+  //   chainlinkAggregators
+  // );
 
-  const [assets, sources] = getPairsTokenAggregator(
-    reserveAssets,
-    chainlinkAggregators
-  );
-
+  const [assets, priceIds] = getPairsTokenPyth(reserveAssets,  priceIdConfig);
+  console.log("Assets:", assets, "Price IDs:", priceIds);
   // Deploy AaveOracle
   await deploy(ORACLE_ID, {
     from: deployer,
     args: [
       addressesProviderAddress,
       assets,
-      sources,
+      priceIds,
+      pythConfig,
       fallbackOracleAddress,
       ZERO_ADDRESS,
       parseUnits("1", OracleQuoteUnit),
@@ -62,6 +70,14 @@ const func: DeployFunction = async function ({
     ...COMMON_DEPLOY_PARAMS,
     contract: "AaveOracle",
   });
+
+  console.log("Oracle deploy arg:", addressesProviderAddress,
+    assets,
+    priceIds,
+    pythConfig,
+    fallbackOracleAddress,
+    ZERO_ADDRESS,
+    parseUnits("1", OracleQuoteUnit));
 
   return true;
 };

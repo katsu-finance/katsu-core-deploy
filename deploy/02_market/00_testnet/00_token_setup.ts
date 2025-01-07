@@ -56,6 +56,7 @@ const func: DeployFunction = async function ({
     args: [deployer, PERMISSIONED_FAUCET, 10000], // 10000 whole tokens
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log("FaucetOwnable deploy arg:",deployer, PERMISSIONED_FAUCET, 10000)
 
   console.log(
     `- Setting up testnet tokens for "${MARKET_NAME}" market at "${network}" network`
@@ -105,6 +106,10 @@ const func: DeployFunction = async function ({
         ],
         ...COMMON_DEPLOY_PARAMS,
       });
+      console.log(symbol+"TestnetERC20 deploy arg:", symbol,
+        symbol,
+        reservesConfig[symbol].reserveDecimals,
+        faucetOwnable.address,);
     }
   });
 
@@ -123,6 +128,7 @@ const func: DeployFunction = async function ({
         args: [reward, reward, 18, faucetOwnable.address],
         ...COMMON_DEPLOY_PARAMS,
       });
+      console.log(reward+"TestnetERC20 deploy arg:", reward, reward, 18, faucetOwnable.address);
     }
 
     // 3. Deployment of Stake Aave

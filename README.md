@@ -60,7 +60,7 @@ You can install the `@aave/deploy-v3` package in your Hardhat project to be able
 To make it work, you must install the following packages in your project:
 
 ```
-npm i --save-dev @aave/deploy-v3 @aave/core-v3 @aave/periphery-v3
+npm i --save-dev @aave/deploy-v3 @aave/core-v3 @hedy_chu/periphery-v3
 ```
 
 Then, proceed to load the deploy scripts adding the `externals` field in your Hardhat config file at `hardhat.config.js|ts`.

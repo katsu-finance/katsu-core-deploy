@@ -1,4 +1,6 @@
-import { BigNumber, BigNumberish, Signer } from "ethers/lib/ethers";
+import { IParaSwapAugustus } from './../typechain/@hedy_chu/periphery-v3/contracts/adapters/paraswap/interfaces/IParaSwapAugustus';
+import { bytes } from './../node_modules/@scure/base/index';
+import { BigNumber, BigNumberish, Signer, BytesLike } from "ethers/lib/ethers";
 import { Deployment } from "hardhat-deploy/types";
 
 export interface SymbolMap<T> {
@@ -18,6 +20,7 @@ export type eNetwork =
   | eFantomNetwork
   | eOptimismNetwork
   | eTenderlyNetwork
+  | eStoryNetwork
   | eBaseNetwork;
 
 type eTenderlyNetwork = "tenderly";
@@ -73,6 +76,11 @@ export enum eArbitrumNetwork {
 export enum eHarmonyNetwork {
   main = "harmony",
   testnet = "harmony-testnet",
+}
+
+export enum eStoryNetwork {
+  story = "story",
+  storyTestnet = "story-testnet",
 }
 
 export enum EthereumNetworkNames {
@@ -236,6 +244,7 @@ export type tStringTokenBigUnits = string; // 1 ETH, or 10e6 USDC or 10e18 DAI
 export type tBigNumberTokenBigUnits = BigNumber;
 export type tStringTokenSmallUnits = string; // 1 wei, or 1 basic unit of USDC, or 1 basic unit of DAI
 export type tBigNumberTokenSmallUnits = BigNumber;
+export type tPriceId = BytesLike;
 
 export interface iAssetCommon<T> {
   [key: string]: T;
@@ -523,6 +532,8 @@ export interface IBaseConfiguration {
   StableDebtTokenImplementation?: iParamsPerNetwork<tEthereumAddress>;
   VariableDebtTokenImplementation?: iParamsPerNetwork<tEthereumAddress>;
   ReserveAssets?: iParamsPerNetwork<SymbolMap<tEthereumAddress>>;
+  PriceId?: iParamsPerNetwork<ITokenPriceId>;
+  Pyth: iParamsPerNetwork<tEthereumAddress>;
   OracleQuoteCurrency: string;
   OracleQuoteUnit: string;
   OracleQuoteCurrencyAddress: tEthereumAddress;
@@ -548,6 +559,10 @@ export interface IAaveConfiguration extends ICommonConfiguration {
 
 export interface ITokenAddress {
   [token: string]: tEthereumAddress;
+}
+
+export interface ITokenPriceId {
+  [token: string]: tPriceId;
 }
 
 export interface ITokenDecimals {

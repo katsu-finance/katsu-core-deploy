@@ -59,8 +59,7 @@ export const CommonsConfig: ICommonConfiguration = {
   ReserveFactorTreasuryAddress: {
     [eEthereumNetwork.kovan]: "0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c",
     [eEthereumNetwork.main]: "0x464c71f6c2f760dda6093dcb91c24c39e5d6e18c",
-    [eArbitrumNetwork.arbitrumTestnet]:
-      "0xeC67987831C4278160D8e652d3edb0Fc45B3766d",
+    [eArbitrumNetwork.arbitrumTestnet]:ZERO_ADDRESS,
     [eEthereumNetwork.rinkeby]: ZERO_ADDRESS,
   },
   FallbackOracle: {
@@ -182,4 +181,22 @@ export const CommonsConfig: ICommonConfiguration = {
     rateStrategyStableOne,
     rateStrategyStableTwo,
   },
+  PriceId: {
+    // [eArbitrumNetwork.arbitrumTestnet]: {
+    [eEthereumNetwork.hardhat]: {
+      AAVE: '0x0000000000000000000000000000000000000000000000000000000000000001',
+      DAI: '0x0000000000000000000000000000000000000000000000000000000000000002',
+      LINK: '0x0000000000000000000000000000000000000000000000000000000000000003',
+      USDC: '0x0000000000000000000000000000000000000000000000000000000000000004',
+      WBTC: '0x0000000000000000000000000000000000000000000000000000000000000005',
+      WETH: '0x0000000000000000000000000000000000000000000000000000000000000006',
+      USDT: '0x0000000000000000000000000000000000000000000000000000000000000007',
+      // Note: EUR/USD, not EURS dedicated oracle
+      EURS: '0x0000000000000000000000000000000000000000000000000000000000000008',
+    },
+    // Add other networks as needed
+  },
+  Pyth:{
+    [eEthereumNetwork.hardhat]:ZERO_ADDRESS
+  }
 };

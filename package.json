@@ -1,6 +1,6 @@
 {
-  "name": "@aave/deploy-v3",
-  "version": "1.56.2",
+  "name": "@hedy_chu/deploy-v3",
+  "version": "1.47.3",
   "files": [
     "dist",
     "helpers",
@@ -20,8 +20,8 @@
   "main": "dist/helpers/index.js",
   "devDependencies": {
     "@aave/aave-token": "^1.0.4",
-    "@aave/core-v3": "^1.19.3",
-    "@aave/periphery-v3": "^2.5.2",
+    "@hedy_chu/core-v3": "^1.18.0",
+    "@hedy_chu/periphery-v3": "^2.4.2",
     "@aave/safety-module": "^1.0.3",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
@@ -66,12 +66,13 @@
     "deploy:market:eth:empty:fork": "FORK=main MARKET_NAME=Ethereum npm run deploy"
   },
   "peerDependencies": {
-    "@aave/core-v3": "x || >=1.0.0-beta || >=3.0.0-beta",
-    "@aave/periphery-v3": "x || >=1.0.0-beta || >=3.0.0-beta",
+    "@hedy_chu/core-v3": "x || >=1.0.0-beta || >=3.0.0-beta",
+    "@hedy_chu/periphery-v3": "x || >=1.0.0-beta || >=3.0.0-beta",
     "hardhat": "^2.6.1"
   },
   "publishConfig": {
-    "registry": " https://registry.npmjs.org"
+    "registry": " https://registry.npmjs.org",
+    "access": "public"
   },
   "repository": {
     "type": "git",

@@ -4,6 +4,7 @@ import {
   iMultiPoolsAssets,
   IReserveParams,
   tEthereumAddress,
+  tPriceId,
 } from "./types";
 import { BigNumberish } from "ethers";
 import {
@@ -259,6 +260,37 @@ export const getPairsTokenAggregator = (
   const mappedAggregators = pairs.map(([, source]) => source);
 
   return [mappedPairs, mappedAggregators];
+};
+
+export const getPairsTokenPyth = (
+  allAssetsAddresses: {
+    [tokenSymbol: string]: tEthereumAddress;
+  },
+  priceIds: { [tokenSymbol: string]:  tPriceId}
+): [string[], tPriceId[]] => {
+  const { ETH, USD, ...assetsAddressesWithoutEth } = allAssetsAddresses;
+
+  console.log("getPairsTokenPyth,priceIds:",priceIds);
+  if (!priceIds || typeof priceIds !== 'object') {
+    throw new Error('Invalid priceIds: it must be a defined object.');
+  }
+
+  const pairs = Object.entries(assetsAddressesWithoutEth).map(
+    ([tokenSymbol, tokenAddress]) => {
+      // const pythAddressIndex = Object.keys(
+      //   pythAddresses
+      // ).findIndex((value) => value === tokenSymbol);
+      const priceId = priceIds[tokenSymbol];
+      if (!priceId) throw `Missing priceId for ${tokenSymbol}`;
+      if (!tokenAddress) throw `Missing token address for ${tokenSymbol}`;
+      return [tokenAddress, priceId];
+    }
+  ) as [string,  tPriceId][];
+
+  const mappedPairs = pairs.map(([asset]) => asset);
+  const mappedPriceIds = pairs.map(([, priceId]) => priceId);
+
+  return [mappedPairs, mappedPriceIds];
 };
 
 export const configureReservesByHelper = async (

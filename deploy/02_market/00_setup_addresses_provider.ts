@@ -69,6 +69,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
   const signer = await hre.ethers.getSigner(deployer);
 
+  console.log(`AddressesProvider arg:`,"0", deployer);
+
   const addressesProviderInstance = (
     (await hre.ethers.getContractAt(
       addressesProviderArtifact.abi,
@@ -86,7 +88,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     poolConfig.ProviderId,
     addressesProviderArtifact.address
   );
-
+  
   // 4. Deploy AaveProtocolDataProvider getters contract
   const protocolDataProvider = await deploy(POOL_DATA_PROVIDER, {
     from: deployer,
@@ -94,6 +96,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [addressesProviderArtifact.address],
     ...COMMON_DEPLOY_PARAMS,
   });
+  console.log(`AaveProtocolDataProvider arg:`,addressesProviderArtifact.address);
   const currentProtocolDataProvider =
     await addressesProviderInstance.getPoolDataProvider();
 

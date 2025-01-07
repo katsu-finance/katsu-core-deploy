@@ -34,6 +34,7 @@ const func: DeployFunction = async function ({
       args: [await (await deployments.get(POOL_ADDRESSES_PROVIDER_ID)).address],
       ...COMMON_DEPLOY_PARAMS,
     });
+    console.log("MockFlashLoanReceiver deployed arg:", await (await deployments.get(POOL_ADDRESSES_PROVIDER_ID)).address);
   }
 
   return true;
