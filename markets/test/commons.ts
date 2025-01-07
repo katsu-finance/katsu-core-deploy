@@ -197,5 +197,7 @@ export const CommonsConfig: ICommonConfiguration = {
     },
     // Add other networks as needed
   },
-  Pyth: ZERO_ADDRESS
+  Pyth:{
+    [eEthereumNetwork.hardhat]:ZERO_ADDRESS
+  }
 };
