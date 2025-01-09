@@ -77,8 +77,7 @@ export const AaveMarket: IAaveConfiguration = {
       EURS: '0x0000000000000000000000000000000000000000000000000000000000000008',
     },
     // Add other networks as needed
-  },
-  Pyth: ZERO_ADDRESS
+  }
 };
 
 export default AaveMarket;

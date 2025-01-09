@@ -1,3 +1,4 @@
+import { ReserveInterestRateStrategyChangedEventObject } from './../../dist/types/typechain/@hedy_chu/core-v3/contracts/protocol/pool/PoolConfigurator.d';
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";
@@ -12,6 +13,7 @@ import {
   ConfigNames,
 } from "../../helpers/market-config-helpers";
 import { MARKET_NAME } from "../../helpers/env";
+import {verify} from "../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -33,9 +35,10 @@ const func: DeployFunction = async function ({
   //   return;
   // }
   // Deploy UiIncentiveDataProvider getter helper
-  await deploy("UiIncentiveDataProviderV3", {
+  const uiIncentiveDataProviderV3 = await deploy("UiIncentiveDataProviderV3", {
     from: deployer,
   });
+  await verify(uiIncentiveDataProviderV3.address, [], hre.network.name);
 
   const pythConfig = await getPythOracles(poolConfig, network);
   console.log("pythConfig:", pythConfig);
@@ -45,7 +48,7 @@ const func: DeployFunction = async function ({
   console.log("ipPriceId:", ipPriceId);
 
   // Deploy UiPoolDataProvider getter helper
-  await deploy("UiPoolDataProviderV3", {
+  const uiPoolDataProviderV3 = await deploy("UiPoolDataProviderV3", {
     from: deployer,
     args: [
       pythConfig,
@@ -54,7 +57,11 @@ const func: DeployFunction = async function ({
     ],
     ...COMMON_DEPLOY_PARAMS,
   });
-  console.log("UiPoolDataProviderV3 deploy arg:",pythConfig,ipPriceId,ipPriceId)
+  await verify(uiPoolDataProviderV3.address, [
+    pythConfig,
+    ipPriceId,
+    ipPriceId
+  ], hre.network.name);
 };
 
 func.tags = ["periphery-post", "ui-helpers"];

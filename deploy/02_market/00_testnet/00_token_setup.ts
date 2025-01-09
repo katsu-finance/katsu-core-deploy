@@ -24,6 +24,7 @@ import {
   setupStkAave,
 } from "../../../helpers/contract-deployments";
 import { MARKET_NAME, PERMISSIONED_FAUCET } from "../../../helpers/env";
+import { verify } from "../../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -56,7 +57,7 @@ const func: DeployFunction = async function ({
     args: [deployer, PERMISSIONED_FAUCET, 10000], // 10000 whole tokens
     ...COMMON_DEPLOY_PARAMS,
   });
-  console.log("FaucetOwnable deploy arg:",deployer, PERMISSIONED_FAUCET, 10000)
+  await verify(faucetOwnable.address, [deployer, PERMISSIONED_FAUCET, 10000], hre.network.name);
 
   console.log(
     `- Setting up testnet tokens for "${MARKET_NAME}" market at "${network}" network`
@@ -95,7 +96,7 @@ const func: DeployFunction = async function ({
       );
     } else {
       console.log("Deploy of TestnetERC20 contract", symbol);
-      await deploy(`${symbol}${TESTNET_TOKEN_PREFIX}`, {
+      const testtoken = await deploy(`${symbol}${TESTNET_TOKEN_PREFIX}`, {
         from: deployer,
         contract: "TestnetERC20",
         args: [
@@ -106,11 +107,14 @@ const func: DeployFunction = async function ({
         ],
         ...COMMON_DEPLOY_PARAMS,
       });
-      console.log(symbol+"TestnetERC20 deploy arg:", symbol,
+      await verify(testtoken.address, [
+        symbol,
         symbol,
         reservesConfig[symbol].reserveDecimals,
-        faucetOwnable.address,);
+        faucetOwnable.address,
+      ], hre.network.name);
     }
+
   });
 
   if (isIncentivesEnabled(poolConfig)) {
@@ -128,7 +132,6 @@ const func: DeployFunction = async function ({
         args: [reward, reward, 18, faucetOwnable.address],
         ...COMMON_DEPLOY_PARAMS,
       });
-      console.log(reward+"TestnetERC20 deploy arg:", reward, reward, 18, faucetOwnable.address);
     }
 
     // 3. Deployment of Stake Aave

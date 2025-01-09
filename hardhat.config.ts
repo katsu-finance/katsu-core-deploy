@@ -211,7 +211,9 @@ export default {
     ? DETERMINISTIC_FACTORIES
     : undefined,
   etherscan: {
-    apiKey: ETHERSCAN_KEY,
+    apiKey: {
+      'storytest': "262YNH3WUGJMF71N4CCFXD9WMYX9RK5P9G"
+    },
     customChains: [
       {
         network: eBaseNetwork.base,
@@ -221,6 +223,14 @@ export default {
           browserURL: "https://basescan.org/",
         },
       },
+      {
+        network: "storytest", 
+        chainId: 1516,
+        urls: {
+          apiURL: "https://odyssey.storyscan.xyz/api/",
+          browserURL: "https://odyssey.storyscan.xyz/"
+        }
+      }
     ],
   },
 };

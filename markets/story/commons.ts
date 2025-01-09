@@ -23,7 +23,7 @@ export const CommonsConfig: ICommonConfiguration = {
   ATokenNamePrefix: "Katsu",
   StableDebtTokenNamePrefix: "Katsu",
   VariableDebtTokenNamePrefix: "Katsu",
-  SymbolPrefix: "Story",
+  SymbolPrefix: "Katsu",
   ProviderId: 36,
   OracleQuoteCurrencyAddress: ZERO_ADDRESS,
   OracleQuoteCurrency: "USD",

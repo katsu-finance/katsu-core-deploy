@@ -62,14 +62,13 @@ const func: DeployFunction = async function ({
     // const daiPyth = await getPyth();
     const daiPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000005',60);
     const ipPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000009',60);
-    // console.log("dai 的价格：",daiPrice);
-    // console.log("ip 的价格：",ipPrice);
-    // console.log("daiPyth 的地址",pyth.address);
+    // console.log("dai price：",daiPrice);
+    // console.log("ip price：",ipPrice);
+    console.log("daiPyth address",pyth.address);
 
-    // // console.log("dai 的source：",source);
-    // console.log("dai 的地址：",daiToken.address);
-    // console.log("aaveOracle 的地址", aaveOracle.address)
-    // console.log("dai 的价格：",await aaveOracle.getAssetPrice(daiToken.address));
+    console.log("dai price",daiToken.address);
+    console.log("aaveOracle address", aaveOracle.address)
+    console.log("dai price",await aaveOracle.getAssetPrice(daiToken.address));
   }
 
   if (process.env.TRANSFER_OWNERSHIP === "true") {

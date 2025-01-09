@@ -20,6 +20,7 @@ import { eNetwork, ICommonConfiguration, SymbolMap } from "../../helpers/types";
 import { getPairsTokenAggregator,getPairsTokenPyth } from "../../helpers/init-helpers";
 import { parseUnits } from "ethers/lib/utils";
 import { MARKET_NAME } from "../../helpers/env";
+import { verify } from "../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -56,7 +57,7 @@ const func: DeployFunction = async function ({
   const [assets, priceIds] = getPairsTokenPyth(reserveAssets,  priceIdConfig);
   console.log("Assets:", assets, "Price IDs:", priceIds);
   // Deploy AaveOracle
-  await deploy(ORACLE_ID, {
+  const oracle = await deploy(ORACLE_ID, {
     from: deployer,
     args: [
       addressesProviderAddress,
@@ -71,13 +72,15 @@ const func: DeployFunction = async function ({
     contract: "AaveOracle",
   });
 
-  console.log("Oracle deploy arg:", addressesProviderAddress,
+  await verify(oracle.address,[
+    addressesProviderAddress,
     assets,
     priceIds,
     pythConfig,
     fallbackOracleAddress,
     ZERO_ADDRESS,
-    parseUnits("1", OracleQuoteUnit));
+    parseUnits("1", OracleQuoteUnit),
+  ], hre.network.name);
 
   return true;
 };

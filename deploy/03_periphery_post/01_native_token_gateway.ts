@@ -9,6 +9,7 @@ import { WRAPPED_NATIVE_TOKEN_PER_NETWORK } from "../../helpers/constants";
 import { eNetwork } from "../../helpers/types";
 import { POOL_PROXY_ID, TESTNET_TOKEN_PREFIX } from "../../helpers";
 import { MARKET_NAME } from "../../helpers/env";
+import { verify } from "../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -40,11 +41,11 @@ const func: DeployFunction = async function ({
 
   const { address: poolAddress } = await deployments.get(POOL_PROXY_ID);
 
-  await deploy("WrappedTokenGatewayV3", {
+  const wrappedTokenGatewayV3 = await deploy("WrappedTokenGatewayV3", {
     from: deployer,
     args: [wrappedNativeTokenAddress, deployer, poolAddress],
   });
-  console.log("WrappedTokenGatewayV3 deploy arg:", wrappedNativeTokenAddress, deployer, poolAddress);
+  await verify(wrappedTokenGatewayV3.address, [wrappedNativeTokenAddress, deployer, poolAddress], hre.network.name);
 };
 
 func.tags = ["periphery-post", "WrappedTokenGateway"];

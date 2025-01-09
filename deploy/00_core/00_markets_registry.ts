@@ -1,7 +1,9 @@
+import { Contract } from 'ethers';
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { PoolAddressesProviderRegistry } from "../../typechain";
 import { waitForTx } from "../../helpers/utilities/tx";
+import { verify } from "../../helpers/verify";
 import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";
 
 const func: DeployFunction = async function ({
@@ -20,7 +22,7 @@ const func: DeployFunction = async function ({
       ...COMMON_DEPLOY_PARAMS,
     }
   );
-  console.log("PoolAddressesProviderRegistry arg:",deployer)
+  await verify(poolAddressesProviderRegistryArtifact.address,[deployer],hre.network.name);
 
   const registryInstance = (
     (await hre.ethers.getContractAt(

@@ -22,6 +22,7 @@ import {
 } from "../../../helpers/constants";
 import Bluebird from "bluebird";
 import { MARKET_NAME } from "../../../helpers/env";
+import { verify } from "../../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -70,13 +71,13 @@ const func: DeployFunction = async function ({
   priceIds.push(priceIdConfig['IP']);
   console.log("pyth priceIds:", priceIds);
   console.log("pyth prices:", prices);
-    await deploy(`${TESTNET_PRICE_PYTH_PREFIX}`, {
+  const pyth = await deploy(`${TESTNET_PRICE_PYTH_PREFIX}`, {
       args: [priceIds, prices],
       from: deployer,
       ...COMMON_DEPLOY_PARAMS,
       contract: "MockPyth",
     });
-    console.log(`MockPyth Deploy arg:`,priceIds, prices);
+    await verify(pyth.address, [priceIds, prices], hre.network.name);
 
   return true;
 };
