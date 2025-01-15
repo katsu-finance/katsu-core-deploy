@@ -17,14 +17,14 @@ const func: DeployFunction = async function ({
     ...COMMON_DEPLOY_PARAMS,
   });
 
-  await verify(supplyLogicArtifact.address, []);
+  await verify(supplyLogicArtifact.address, [], hre.network.name);
 
   const borrowLogicArtifact = await deploy("BorrowLogic", {
     from: deployer,
     args: [],
     ...COMMON_DEPLOY_PARAMS,
   });
-  await verify(borrowLogicArtifact.address, [],hre.network.name);
+  await verify(borrowLogicArtifact.address, [], hre.network.name);
 
   const liquidationLogicArtifact = await deploy("LiquidationLogic", {
     from: deployer,
