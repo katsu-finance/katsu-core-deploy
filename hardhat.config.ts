@@ -142,6 +142,7 @@ export default {
       "@hedy_chu/core-v3/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
       "@hedy_chu/core-v3/contracts/protocol/configuration/PoolAddressesProvider.sol",
       "@hedy_chu/core-v3/contracts/misc/AaveOracle.sol",
+      "@hedy_chu/core-v3/contracts/misc/FallbackOracle.sol",
       "@hedy_chu/core-v3/contracts/protocol/tokenization/AToken.sol",
       "@hedy_chu/core-v3/contracts/protocol/tokenization/DelegationAwareAToken.sol",
       "@hedy_chu/core-v3/contracts/protocol/tokenization/StableDebtToken.sol",

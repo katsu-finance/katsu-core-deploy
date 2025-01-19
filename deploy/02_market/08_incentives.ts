@@ -1,11 +1,11 @@
-import { getParamPerNetwork } from "./../../helpers/market-config-helpers";
-import { EMPTY_STORAGE_SLOT, ZERO_ADDRESS } from "./../../helpers/constants";
+import { getParamPerNetwork } from "../../helpers/market-config-helpers";
+import { EMPTY_STORAGE_SLOT, ZERO_ADDRESS } from "../../helpers/constants";
 import {
   EMISSION_MANAGER_ID,
   INCENTIVES_STAKED_TOKEN_STRATEGY_ID,
   POOL_ADDRESSES_PROVIDER_ID,
   STAKE_AAVE_PROXY,
-} from "./../../helpers/deploy-ids";
+} from "../../helpers/deploy-ids";
 import {
   EmissionManager,
   PoolAddressesProvider,
@@ -128,12 +128,12 @@ const func: DeployFunction = async function ({
     INCENTIVES_PROXY_ID
   );
 
+  console.log("incentivesRewardsVault: ", incentivesRewardsVault);
   // Init RewardsController address
   await waitForTx(
     await emissionManager.setRewardsController(rewardsProxyAddress)
   );
 
-  if (!isLive) {
     const incentives = await deploy(INCENTIVES_PULL_REWARDS_STRATEGY_ID, {
       from: deployer,
       contract: "PullRewardsTransferStrategy",
@@ -149,6 +149,7 @@ const func: DeployFunction = async function ({
       incentivesEmissionManager,
       incentivesRewardsVault,
     ], hre.network.name);
+
     const stakedAaveAddress = isLive
       ? getParamPerNetwork(poolConfig.StkAaveProxy, network)
       : (await deployments.getOrNull(STAKE_AAVE_PROXY))?.address;
@@ -169,7 +170,6 @@ const func: DeployFunction = async function ({
         "[WARNING] Missing StkAave address. Skipping StakedTokenTransferStrategy deployment."
       );
     }
-  }
 
   // Transfer emission manager ownership
 

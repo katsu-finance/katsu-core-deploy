@@ -57,9 +57,9 @@ export const ZERO_BYTES_32 =
 export const MOCK_CHAINLINK_AGGREGATORS_PRICES: { [key: string]: string } = {
   AAVE: parseUnits("300", 8).toString(),
   WETH: parseUnits("4000", 8).toString(),
-  WIP: parseUnits("4000", 8).toString(),
+  WIP: parseUnits("10", 8).toString(),
   ETH: parseUnits("4000", 8).toString(),
-  IP: parseUnits("4000", 8).toString(),
+  IP: parseUnits("10", 8).toString(),
   DAI: parseUnits("1", 8).toString(),
   USDC: parseUnits("1", 8).toString(),
   USDT: parseUnits("1", 8).toString(),

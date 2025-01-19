@@ -270,16 +270,12 @@ export const getPairsTokenPyth = (
 ): [string[], tPriceId[]] => {
   const { ETH, USD, ...assetsAddressesWithoutEth } = allAssetsAddresses;
 
-  console.log("getPairsTokenPyth,priceIds:",priceIds);
   if (!priceIds || typeof priceIds !== 'object') {
     throw new Error('Invalid priceIds: it must be a defined object.');
   }
 
   const pairs = Object.entries(assetsAddressesWithoutEth).map(
     ([tokenSymbol, tokenAddress]) => {
-      // const pythAddressIndex = Object.keys(
-      //   pythAddresses
-      // ).findIndex((value) => value === tokenSymbol);
       const priceId = priceIds[tokenSymbol];
       if (!priceId) throw `Missing priceId for ${tokenSymbol}`;
       if (!tokenAddress) throw `Missing token address for ${tokenSymbol}`;

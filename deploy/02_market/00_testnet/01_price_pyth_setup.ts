@@ -15,7 +15,7 @@ import {
   getPriceIdOracles,
 } from "../../../helpers/market-config-helpers";
 import { eNetwork,tPriceId } from "../../../helpers/types";
-import { TESTNET_PRICE_PYTH_PREFIX } from "../../../helpers/deploy-ids";
+import { TESTNET_PRICE_PYTH_PREFIX, POOL_ADDRESSES_PROVIDER_ID } from "../../../helpers/deploy-ids";
 import {
   MOCK_CHAINLINK_AGGREGATORS_PRICES,
   V3_CORE_VERSION,
@@ -40,7 +40,9 @@ const func: DeployFunction = async function ({
     console.log("[NOTICE] Skipping deployment of testnet price aggregators");
     return;
   }
-
+  const { address: addressesProviderAddress } = await deployments.get(
+    POOL_ADDRESSES_PROVIDER_ID
+  );
   const reserves = await getReserveAddresses(poolConfig, network);
 
   let symbols = Object.keys(reserves);
@@ -71,13 +73,13 @@ const func: DeployFunction = async function ({
   priceIds.push(priceIdConfig['IP']);
   console.log("pyth priceIds:", priceIds);
   console.log("pyth prices:", prices);
-  const pyth = await deploy(`${TESTNET_PRICE_PYTH_PREFIX}`, {
-      args: [priceIds, prices],
+  const pyth = await deploy(TESTNET_PRICE_PYTH_PREFIX, {
+      args: [addressesProviderAddress, priceIds, prices],
       from: deployer,
       ...COMMON_DEPLOY_PARAMS,
       contract: "MockPyth",
     });
-    await verify(pyth.address, [priceIds, prices], hre.network.name);
+    await verify(pyth.address, [addressesProviderAddress, priceIds, prices], hre.network.name);
 
   return true;
 };

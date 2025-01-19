@@ -54,7 +54,7 @@
     "run-env": "npm ci && tail -f /dev/null",
     "cp-typechain": "cp typechain/*.d.ts ./dist/types/typechain",
     "build": "tsc --project lib.tsconfig.json && npm run cp-typechain",
-    "clean": "rm -rf artifacts/ types/ dist/ typechain/",
+    "clean": "rm -rf artifacts/ types/ dist/ typechain/ cache/",
     "compile": "SKIP_LOAD=true npx hardhat compile",
     "prepublish": "npm run clean && npm run compile && npm run build",
     "node": "npx hardhat node --no-deploy",
