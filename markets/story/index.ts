@@ -1,4 +1,4 @@
-import { eStoryNetwork, IAaveConfiguration,eEthereumNetwork } from "./../../helpers/types";
+import { eStoryNetwork, IAaveConfiguration } from "./../../helpers/types";
 import { ZERO_ADDRESS } from "../../helpers";
 import {
   strategyDAI,
@@ -7,11 +7,26 @@ import {
   strategyWIP,
   strategyUSDT,
   strategyWETH,
+  strategyAAVE,
+  strategyLINK,
 } from "./reservesConfigs";
-import { CommonsConfig } from "./commons";
+import {
+  rateStrategyStableOne,
+  rateStrategyStableTwo,
+  rateStrategyVolatileOne,
+} from "./rateStrategies";
+import { AaveMarket } from "../aave/index";
 
 export const StoryConfig: IAaveConfiguration = {
-  ...CommonsConfig,
+  ...AaveMarket,
+  MarketId: "Katsu Market",
+  WrappedNativeTokenSymbol: "WIP",
+  ATokenNamePrefix: "Katsu",
+  StableDebtTokenNamePrefix: "Katsu",
+  VariableDebtTokenNamePrefix: "Katsu",
+  SymbolPrefix: "Katsu",
+  IncentivesConfig: {enabled:{}, rewards:{}, rewardsOracle:{}, incentivesInput:{}},
+  ReserveFactorTreasuryAddress: {},
   ReservesConfig: {
     DAI: strategyDAI,
     USDC: strategyUSDC,
@@ -19,6 +34,17 @@ export const StoryConfig: IAaveConfiguration = {
     WIP: strategyWIP,
     USDT: strategyUSDT,
     WETH: strategyWETH,
+    AAVE: strategyAAVE,
+    LINK: strategyLINK,
+  },
+  ChainlinkAggregator: {
+    [eStoryNetwork.story]: {
+      USDC: ZERO_ADDRESS,
+      DAI: ZERO_ADDRESS,
+      WBTC: ZERO_ADDRESS,
+      WETH: ZERO_ADDRESS,
+      USDT: ZERO_ADDRESS,
+    },
   },
   ReserveAssets: {
     [eStoryNetwork.story]: {
@@ -38,33 +64,16 @@ export const StoryConfig: IAaveConfiguration = {
       IP: ZERO_ADDRESS,
     },
   },
-  
-  PriceId: {
-    [eStoryNetwork.storyTestnet]: {
-      DAI: '0x0000000000000000000000000000000000000000000000000000000000000001',
-      USDC: '0x0000000000000000000000000000000000000000000000000000000000000002',
-      WBTC: '0x0000000000000000000000000000000000000000000000000000000000000003',
-      WIP: '0x0000000000000000000000000000000000000000000000000000000000000004',
-      USDT: '0x0000000000000000000000000000000000000000000000000000000000000005',
-      WETH: '0x0000000000000000000000000000000000000000000000000000000000000006',
-      IP: '0x0000000000000000000000000000000000000000000000000000000000000007',
-    },
-    [eEthereumNetwork.hardhat]: {
-      DAI: '0x0000000000000000000000000000000000000000000000000000000000000001',
-      USDC: '0x0000000000000000000000000000000000000000000000000000000000000002',
-      WBTC: '0x0000000000000000000000000000000000000000000000000000000000000003',
-      WIP: '0x0000000000000000000000000000000000000000000000000000000000000004',
-      USDT: '0x0000000000000000000000000000000000000000000000000000000000000005',
-      WETH: '0x0000000000000000000000000000000000000000000000000000000000000006',
-      IP: '0x0000000000000000000000000000000000000000000000000000000000000007',
-    },
-    // Add other networks as needed
-  },
+  EModes: {},
   FlashLoanPremiums: {
     total: 0.0009e4,
     protocol: 0,
   },
-  
+  RateStrategies: {
+    rateStrategyVolatileOne,
+    rateStrategyStableOne,
+    rateStrategyStableTwo,
+  }
 };
 
 export default StoryConfig;

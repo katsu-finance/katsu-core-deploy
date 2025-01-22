@@ -55,7 +55,6 @@ const func: DeployFunction = async function ({
     treasuryOwner = deployer;
   }
 
-  console.log("Treasury address: ", treasuryAddress);
   if (treasuryAddress && getAddress(treasuryAddress) !== ZERO_ADDRESS) {
     const treasuryContract = await AaveEcosystemReserveV2__factory.connect(
       treasuryAddress,

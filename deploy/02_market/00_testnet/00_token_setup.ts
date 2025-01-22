@@ -114,7 +114,6 @@ const func: DeployFunction = async function ({
         faucetOwnable.address,
       ], hre.network.name);
     }
-
   });
 
   if (isIncentivesEnabled(poolConfig)) {

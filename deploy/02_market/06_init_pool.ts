@@ -1,11 +1,11 @@
-import { ZERO_ADDRESS } from "../../helpers/constants";
-import { getPoolConfiguratorProxy } from "../../helpers/contract-getters";
-import { L2_POOL_IMPL_ID } from "../../helpers/deploy-ids";
+import { ZERO_ADDRESS } from "./../../helpers/constants";
+import { getPoolConfiguratorProxy } from "./../../helpers/contract-getters";
+import { L2_POOL_IMPL_ID } from "./../../helpers/deploy-ids";
 import {
   ConfigNames,
   isL2PoolSupported,
   loadPoolConfig,
-} from "../../helpers/market-config-helpers";
+} from "./../../helpers/market-config-helpers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";

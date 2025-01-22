@@ -7,7 +7,6 @@ import {
   PoolConfiguration,
   IBaseConfiguration,
   ITokenAddress,
-  ITokenPriceId,
   tEthereumAddress,
   ICommonConfiguration,
   SubTokenOutput,
@@ -212,19 +211,6 @@ export const getReserveAddresses = async (
   }, {});
 };
 
-export const getPriceIdOracles = async (
-  poolConfig: IBaseConfiguration,
-  network: eNetwork
-) => {
-  console.log("[NOTICE] Using PriceId from configuration file");
-  console.log("network:",network);
-
-  return (
-    getParamPerNetwork<ITokenPriceId>(poolConfig.PriceId, network) || {}
-  );
-  
-};
-
 export const getSubTokensByPrefix = async (
   prefix: string
 ): Promise<SubTokenOutput[]> => {
@@ -299,38 +285,6 @@ export const getChainlinkOracles = async (
     acc[symbol] = allDeployments[key].address;
     return acc;
   }, {});
-};
-
-
-export const getPythOracles = async (
-  poolConfig: IBaseConfiguration,
-  network: eNetwork
-) => {
-  const isLive = hre.config.networks[network].live;
-  if (isLive) {
-    console.log("[NOTICE] Using Pyth from configuration file");
-
-    return (
-      getParamPerNetwork<tEthereumAddress>(
-        poolConfig.Pyth,
-        network
-      ) || {}
-    );
-  }
-   
-  // todo delete
-  console.log("network getPythOracles:",network);
-  console.log("getPythOracles config", getParamPerNetwork<tEthereumAddress>(
-    poolConfig.Pyth,
-    network
-  ) || {});
-
-  console.log(
-    "[WARNING] Using deployed Mock Price Pyth instead of Pyth from configuration file"
-  );
-  const allDeployments = await hre.deployments.all();
-
-  return allDeployments[TESTNET_PRICE_PYTH_PREFIX].address;
 };
 
 export const getTreasuryAddress = async (

@@ -6,7 +6,7 @@ import {
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { WRAPPED_NATIVE_TOKEN_PER_NETWORK } from "../../helpers/constants";
-import { eNetwork } from "../../helpers/types";
+import { eNetwork, eStoryNetwork } from "../../helpers/types";
 import { POOL_PROXY_ID, TESTNET_TOKEN_PREFIX } from "../../helpers";
 import { MARKET_NAME } from "../../helpers/env";
 import { verify } from "../../helpers/verify";
@@ -26,7 +26,7 @@ const func: DeployFunction = async function ({
   let wrappedNativeTokenAddress;
 
   // Local networks that are not live or testnet, like hardhat network, will deploy a WETH9 contract as mockup for testing deployments
-  if (isTestnetMarket(poolConfig)) {
+  if (isTestnetMarket(poolConfig) && network !== eStoryNetwork.storyTestnet) {
     wrappedNativeTokenAddress = (
       await deployments.get(
         `${poolConfig.WrappedNativeTokenSymbol}${TESTNET_TOKEN_PREFIX}`

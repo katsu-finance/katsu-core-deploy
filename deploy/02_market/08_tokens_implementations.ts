@@ -20,6 +20,7 @@ import { getContract, waitForTx } from "../../helpers";
 import { MARKET_NAME } from "../../helpers/env";
 import { verify } from "../../helpers/verify";
 
+
 const func: DeployFunction = async function ({
   getNamedAccounts,
   deployments,
@@ -45,7 +46,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
-  await verify(aTokenArtifact.address,[poolAddress], hre.network.name);
+  await verify(aTokenArtifact.address, [poolAddress], hre.network.name);
 
   const aToken = (await hre.ethers.getContractAt(
     aTokenArtifact.abi,
@@ -73,7 +74,7 @@ const func: DeployFunction = async function ({
       ...COMMON_DEPLOY_PARAMS,
     }
   );
-  await verify(delegationAwareATokenArtifact.address,[poolAddress], hre.network.name);
+  await verify(delegationAwareATokenArtifact.address, [poolAddress], hre.network.name);
 
   const delegationAwareAToken = (await hre.ethers.getContractAt(
     delegationAwareATokenArtifact.abi,
@@ -98,7 +99,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
-  await verify(stableDebtTokenArtifact.address,[poolAddress], hre.network.name);
+  await verify(stableDebtTokenArtifact.address, [poolAddress], hre.network.name);
 
   const stableDebtToken = (await hre.ethers.getContractAt(
     stableDebtTokenArtifact.abi,
@@ -122,7 +123,7 @@ const func: DeployFunction = async function ({
     args: [poolAddress],
     ...COMMON_DEPLOY_PARAMS,
   });
-  await verify(variableDebtTokenArtifact.address,[poolAddress], hre.network.name);
+  await verify(variableDebtTokenArtifact.address, [poolAddress], hre.network.name);
 
   const variableDebtToken = (await hre.ethers.getContractAt(
     variableDebtTokenArtifact.abi,

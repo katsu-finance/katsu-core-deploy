@@ -1,4 +1,4 @@
-import { getChainlinkOracles} from "../../helpers/market-config-helpers";
+import { getChainlinkOracles } from "../../helpers/market-config-helpers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";
@@ -16,11 +16,10 @@ import {
   getReserveAddresses,
 } from "../../helpers/market-config-helpers";
 import { eNetwork, ICommonConfiguration, SymbolMap } from "../../helpers/types";
+import { getPairsTokenAggregator } from "../../helpers/init-helpers";
 import { parseUnits } from "ethers/lib/utils";
 import { MARKET_NAME } from "../../helpers/env";
 import { verify } from "../../helpers/verify";
-import { getPairsTokenAggregator } from "../../helpers/init-helpers";
-
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -40,15 +39,15 @@ const func: DeployFunction = async function ({
     POOL_ADDRESSES_PROVIDER_ID
   );
 
-  const fallbackOracle = await deployments.get(FALLBACK_ORACLE_ID);
-  console.log('fallbackOracleAddress:',fallbackOracle.address);
+  const fallbackOracleAddress = ZERO_ADDRESS;
 
   const reserveAssets = await getReserveAddresses(poolConfig, network);
+  const chainlinkAggregators = await getChainlinkOracles(poolConfig, network);
 
-  const assets = Object.values(reserveAssets);
-  const sources = assets.map(() => ZERO_ADDRESS);
-  console.log('assets:',assets);
-  console.log('sources:',sources);
+  const [assets, sources] = getPairsTokenAggregator(
+    reserveAssets,
+    chainlinkAggregators
+  );
 
   // Deploy AaveOracle
   const oracle = await deploy(ORACLE_ID, {
@@ -57,22 +56,21 @@ const func: DeployFunction = async function ({
       addressesProviderAddress,
       assets,
       sources,
-      fallbackOracle.address,
+      fallbackOracleAddress,
       ZERO_ADDRESS,
       parseUnits("1", OracleQuoteUnit),
     ],
     ...COMMON_DEPLOY_PARAMS,
     contract: "AaveOracle",
   });
-
   await verify(oracle.address,[
     addressesProviderAddress,
     assets,
     sources,
-    fallbackOracle.address,
+    fallbackOracleAddress,
     ZERO_ADDRESS,
     parseUnits("1", OracleQuoteUnit),
-  ], hre.network.name);
+  ], hre.network.name)
 
   return true;
 };

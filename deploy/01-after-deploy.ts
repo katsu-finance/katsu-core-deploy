@@ -5,7 +5,7 @@ import {
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { MARKET_NAME } from "../helpers/env";
-import { getPoolConfiguratorProxy, waitForTx, getAaveOracle, getMintableERC20,getPyth} from "../helpers";
+import { getPoolConfiguratorProxy, waitForTx } from "../helpers";
 
 /**
  * The following script runs after the deployment starts
@@ -46,27 +46,6 @@ const func: DeployFunction = async function ({
     const poolConfigurator = await getPoolConfiguratorProxy();
     await waitForTx(await poolConfigurator.setPoolPause(false));
     console.log("- Pool unpaused and accepting deposits.");
-
-    const aaveOracle = await getAaveOracle();
-    const wipToken = await getMintableERC20((await deployments.get("WIP-TestnetMintableERC20-story")).address);
-    const daiToken = await getMintableERC20((await deployments.get("DAI-TestnetMintableERC20-story")).address);
-    const daiAToken = await getMintableERC20((await deployments.get("DAI-AToken-story")).address);
-    const decimal = await daiAToken.decimals();
-    console.log("daiAToken decimal:",decimal);
-    const pyth = await getPyth();
-
-    const daiPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000001',60);
-    const ipPrice = await pyth.getPriceNoOlderThan('0x0000000000000000000000000000000000000000000000000000000000000007',60);
-    console.log("dai price:",daiPrice);
-    console.log("ip price:",ipPrice);
-    console.log("pyth address",pyth.address);
-
-    console.log("dai price",daiToken.address);
-    console.log("aaveOracle address", aaveOracle.address)
-    console.log("dai price",await aaveOracle.getAssetPrice(daiToken.address));
-    console.log("wip price",await aaveOracle.getAssetPrice(wipToken.address));
-    console.log("ip price",await aaveOracle.getAssetPrice("0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"));
-    console.log("fallbackOracle",await aaveOracle.getFallbackOracle());
   }
 
   if (process.env.TRANSFER_OWNERSHIP === "true") {

@@ -88,7 +88,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     poolConfig.ProviderId,
     addressesProviderArtifact.address
   );
-  
+
   // 4. Deploy AaveProtocolDataProvider getters contract
   const protocolDataProvider = await deploy(POOL_DATA_PROVIDER, {
     from: deployer,

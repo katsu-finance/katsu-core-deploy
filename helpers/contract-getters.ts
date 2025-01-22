@@ -35,8 +35,7 @@ import {
   WrappedTokenGatewayV3,
   UiPoolDataProviderV3,
   WalletBalanceProvider,
-  UiIncentiveDataProviderV3,
-  MockPyth,
+  UiIncentiveDataProviderV3
 } from "../typechain";
 import { tEthereumAddress } from "./types";
 import {
@@ -188,14 +187,6 @@ export const getFallbackOracle = async (
     "PriceOracle",
     address || (await hre.deployments.get(FALLBACK_ORACLE_ID)).address
   );
-
-  export const getPyth = async (
-    address?: tEthereumAddress
-  ): Promise<MockPyth> =>
-    getContract(
-      "MockPyth",
-      address || (await hre.deployments.get("TestnetPricePyth-story")).address
-    );
 
 export const getMockFlashLoanReceiver = async (
   address?: tEthereumAddress

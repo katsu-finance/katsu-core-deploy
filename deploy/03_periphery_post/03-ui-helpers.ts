@@ -6,13 +6,7 @@ import {
   chainlinkEthUsdAggregatorProxy,
 } from "../../helpers/constants";
 import { eNetwork } from "../../helpers";
-import {getPythOracles,getPriceIdOracles} from "../../helpers/market-config-helpers";
-import {
-  loadPoolConfig,
-  ConfigNames,
-} from "../../helpers/market-config-helpers";
-import { MARKET_NAME } from "../../helpers/env";
-import {verify} from "../../helpers/verify";
+import { verify } from "../../helpers/verify";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -21,12 +15,18 @@ const func: DeployFunction = async function ({
 }: HardhatRuntimeEnvironment) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const poolConfig = await loadPoolConfig(MARKET_NAME as ConfigNames);
 
   const network = (
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
 
+  if (!chainlinkAggregatorProxy[network]) {
+    console.log(
+      '[Deployments] Skipping the deployment of UiPoolDataProvider due missing constant "chainlinkAggregatorProxy" configuration at ./helpers/constants.ts'
+    );
+    return;
+  }
+  // Deploy UiIncentiveDataProvider getter helper
   const uiIncentiveDataProviderV3 = await deploy("UiIncentiveDataProviderV3", {
     from: deployer,
   });
@@ -37,14 +37,14 @@ const func: DeployFunction = async function ({
   const uiPoolDataProviderV3 = await deploy("UiPoolDataProviderV3", {
     from: deployer,
     args: [
-      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-      '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+      chainlinkAggregatorProxy[network],
+      chainlinkEthUsdAggregatorProxy[network],
     ],
     ...COMMON_DEPLOY_PARAMS,
   });
   await verify(uiPoolDataProviderV3.address, [
-    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-    '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'
+    chainlinkAggregatorProxy[network],
+    chainlinkEthUsdAggregatorProxy[network],
   ], hre.network.name);
 };
 

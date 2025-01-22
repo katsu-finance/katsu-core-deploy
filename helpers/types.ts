@@ -244,7 +244,6 @@ export type tStringTokenBigUnits = string; // 1 ETH, or 10e6 USDC or 10e18 DAI
 export type tBigNumberTokenBigUnits = BigNumber;
 export type tStringTokenSmallUnits = string; // 1 wei, or 1 basic unit of USDC, or 1 basic unit of DAI
 export type tBigNumberTokenSmallUnits = BigNumber;
-export type tPriceId = BytesLike;
 
 export interface iAssetCommon<T> {
   [key: string]: T;
@@ -532,8 +531,6 @@ export interface IBaseConfiguration {
   StableDebtTokenImplementation?: iParamsPerNetwork<tEthereumAddress>;
   VariableDebtTokenImplementation?: iParamsPerNetwork<tEthereumAddress>;
   ReserveAssets?: iParamsPerNetwork<SymbolMap<tEthereumAddress>>;
-  PriceId?: iParamsPerNetwork<ITokenPriceId>;
-  Pyth: iParamsPerNetwork<tEthereumAddress>;
   OracleQuoteCurrency: string;
   OracleQuoteUnit: string;
   OracleQuoteCurrencyAddress: tEthereumAddress;
@@ -559,10 +556,6 @@ export interface IAaveConfiguration extends ICommonConfiguration {
 
 export interface ITokenAddress {
   [token: string]: tEthereumAddress;
-}
-
-export interface ITokenPriceId {
-  [token: string]: tPriceId;
 }
 
 export interface ITokenDecimals {

@@ -1,4 +1,3 @@
-import { Contract } from 'ethers';
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { PoolAddressesProviderRegistry } from "../../typechain";
