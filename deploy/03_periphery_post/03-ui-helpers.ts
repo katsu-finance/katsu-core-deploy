@@ -20,12 +20,24 @@ const func: DeployFunction = async function ({
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
 
-  if (!chainlinkAggregatorProxy[network]) {
-    console.log(
-      '[Deployments] Skipping the deployment of UiPoolDataProvider due missing constant "chainlinkAggregatorProxy" configuration at ./helpers/constants.ts'
-    );
-    return;
+  let chainlinkAggregatorProxyAddress;
+  let chainlinkEthUsdAggregatorProxyAddress;
+  if (hre.network.name =="story-testnet") {
+    chainlinkAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
+    chainlinkEthUsdAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
+  }else {
+    chainlinkAggregatorProxyAddress = chainlinkAggregatorProxy[network];
+    chainlinkEthUsdAggregatorProxyAddress = chainlinkEthUsdAggregatorProxy[network];
   }
+  console.log("chainlinkAggregatorProxyAddress", chainlinkAggregatorProxyAddress);
+  console.log("chainlinkEthUsdAggregatorProxyAddress", chainlinkEthUsdAggregatorProxyAddress);
+  // if (!chainlinkAggregatorProxy[network]) {
+  //   console.log(
+  //     '[Deployments] Skipping the deployment of UiPoolDataProvider due missing constant "chainlinkAggregatorProxy" configuration at ./helpers/constants.ts'
+  //   );
+  //   return;
+  // }
+
   // Deploy UiIncentiveDataProvider getter helper
   const uiIncentiveDataProviderV3 = await deploy("UiIncentiveDataProviderV3", {
     from: deployer,
@@ -37,14 +49,14 @@ const func: DeployFunction = async function ({
   const uiPoolDataProviderV3 = await deploy("UiPoolDataProviderV3", {
     from: deployer,
     args: [
-      chainlinkAggregatorProxy[network],
-      chainlinkEthUsdAggregatorProxy[network],
+      chainlinkAggregatorProxyAddress,
+      chainlinkEthUsdAggregatorProxyAddress,
     ],
     ...COMMON_DEPLOY_PARAMS,
   });
   await verify(uiPoolDataProviderV3.address, [
-    chainlinkAggregatorProxy[network],
-    chainlinkEthUsdAggregatorProxy[network],
+    chainlinkAggregatorProxyAddress,
+    chainlinkEthUsdAggregatorProxyAddress,
   ], hre.network.name);
 };
 

@@ -26,7 +26,7 @@ const func: DeployFunction = async function ({
   let wrappedNativeTokenAddress;
 
   // Local networks that are not live or testnet, like hardhat network, will deploy a WETH9 contract as mockup for testing deployments
-  if (isTestnetMarket(poolConfig) && network !== eStoryNetwork.storyTestnet) {
+  if (isTestnetMarket(poolConfig)) {
     wrappedNativeTokenAddress = (
       await deployments.get(
         `${poolConfig.WrappedNativeTokenSymbol}${TESTNET_TOKEN_PREFIX}`
@@ -36,6 +36,7 @@ const func: DeployFunction = async function ({
     if (!WRAPPED_NATIVE_TOKEN_PER_NETWORK[network]) {
       throw `Missing Wrapped native token for network: ${network}, fill the missing configuration at ./helpers/constants.ts`;
     }
+    console.log(`Wrapped native token for network: ${network} is ${wrappedNativeTokenAddress = WRAPPED_NATIVE_TOKEN_PER_NETWORK[network]}`);
     wrappedNativeTokenAddress = WRAPPED_NATIVE_TOKEN_PER_NETWORK[network];
   }
 

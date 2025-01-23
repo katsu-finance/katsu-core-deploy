@@ -1,4 +1,6 @@
-import { eStoryNetwork, IAaveConfiguration } from "./../../helpers/types";
+import { eEthereumNetwork, eStoryNetwork, IAaveConfiguration,
+  TransferStrategy,
+  AssetType, } from "./../../helpers/types";
 import { ZERO_ADDRESS } from "../../helpers";
 import {
   strategyDAI,
@@ -7,8 +9,6 @@ import {
   strategyWIP,
   strategyUSDT,
   strategyWETH,
-  strategyAAVE,
-  strategyLINK,
 } from "./reservesConfigs";
 import {
   rateStrategyStableOne,
@@ -25,7 +25,6 @@ export const StoryConfig: IAaveConfiguration = {
   StableDebtTokenNamePrefix: "Katsu",
   VariableDebtTokenNamePrefix: "Katsu",
   SymbolPrefix: "Katsu",
-  IncentivesConfig: {enabled:{}, rewards:{}, rewardsOracle:{}, incentivesInput:{}},
   ReserveFactorTreasuryAddress: {},
   ReservesConfig: {
     DAI: strategyDAI,
@@ -34,8 +33,6 @@ export const StoryConfig: IAaveConfiguration = {
     WIP: strategyWIP,
     USDT: strategyUSDT,
     WETH: strategyWETH,
-    AAVE: strategyAAVE,
-    LINK: strategyLINK,
   },
   ChainlinkAggregator: {
     [eStoryNetwork.story]: {
@@ -73,7 +70,67 @@ export const StoryConfig: IAaveConfiguration = {
     rateStrategyVolatileOne,
     rateStrategyStableOne,
     rateStrategyStableTwo,
-  }
+  },
+  IncentivesConfig: {
+    enabled: {
+      [eEthereumNetwork.hardhat]: true,
+      [eStoryNetwork.storyTestnet]: true,
+    },
+    rewards: {
+      [eEthereumNetwork.hardhat]: {
+        CRV: ZERO_ADDRESS,
+        REW: ZERO_ADDRESS,
+        BAL: ZERO_ADDRESS,
+        StkAave: ZERO_ADDRESS,
+      },
+      [eStoryNetwork.storyTestnet]: {
+        CRV: ZERO_ADDRESS,
+        REW: ZERO_ADDRESS,
+        BAL: ZERO_ADDRESS,
+      }
+    },
+    rewardsOracle: {
+      // [eStoryNetwork.storyTestnet]: {
+      //   CRV: ZERO_ADDRESS,
+      //   REW: ZERO_ADDRESS,
+      //   BAL: ZERO_ADDRESS,
+      // },
+    },
+    incentivesInput: {
+      // [eStoryNetwork.storyTestnet]: [
+      //   {
+      //     emissionPerSecond: "34629756533",
+      //     duration: 7890000,
+      //     asset: "DAI",
+      //     assetType: AssetType.AToken,
+      //     reward: "CRV",
+      //     rewardOracle: "0",
+      //     transferStrategy: TransferStrategy.PullRewardsStrategy,
+      //     transferStrategyParams: "0",
+      //   },
+      //   {
+      //     emissionPerSecond: "300801036720127500",
+      //     duration: 7890000,
+      //     asset: "USDC",
+      //     assetType: AssetType.AToken,
+      //     reward: "REW",
+      //     rewardOracle: "0",
+      //     transferStrategy: TransferStrategy.PullRewardsStrategy,
+      //     transferStrategyParams: "0",
+      //   },
+      //   {
+      //     emissionPerSecond: "300801036720127500",
+      //     duration: 7890000,
+      //     asset: "WIP",
+      //     assetType: AssetType.AToken,
+      //     reward: "REW",
+      //     rewardOracle: "0",
+      //     transferStrategy: TransferStrategy.PullRewardsStrategy,
+      //     transferStrategyParams: "0",
+      //   },
+      // ],
+    },
+  },
 };
 
 export default StoryConfig;

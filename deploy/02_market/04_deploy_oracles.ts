@@ -15,7 +15,7 @@ import {
   checkRequiredEnvironment,
   getReserveAddresses,
 } from "../../helpers/market-config-helpers";
-import { eNetwork, ICommonConfiguration, SymbolMap } from "../../helpers/types";
+import { eNetwork, ICommonConfiguration } from "../../helpers/types";
 import { getPairsTokenAggregator } from "../../helpers/init-helpers";
 import { parseUnits } from "ethers/lib/utils";
 import { MARKET_NAME } from "../../helpers/env";
@@ -48,6 +48,8 @@ const func: DeployFunction = async function ({
     reserveAssets,
     chainlinkAggregators
   );
+  console.log("assets", assets);
+  console.log("sources", sources);
 
   // Deploy AaveOracle
   const oracle = await deploy(ORACLE_ID, {
