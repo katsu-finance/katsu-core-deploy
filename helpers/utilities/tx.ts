@@ -55,7 +55,7 @@ export const parseUnitsFromToken = async (
   amount: string
 ) => {
   const artifact = await hre.deployments.getArtifact(
-    "@hedy_chu/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed"
+    "@katsu-finance/core-v3/contracts/dependencies/openzeppelin/contracts/IERC20Detailed.sol:IERC20Detailed"
   );
   const token = (await hre.ethers.getContractAt(
     artifact.abi,

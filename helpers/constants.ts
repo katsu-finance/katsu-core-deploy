@@ -15,13 +15,13 @@ const {
   version: coreVersion,
 }: {
   version: string;
-} = require("@hedy_chu/core-v3/package.json");
+} = require("@katsu-finance/core-v3/package.json");
 const {
   version: peripheryVersion,
 }: {
   _resolved: string;
   version: string;
-} = require("@hedy_chu/periphery-v3/package.json");
+} = require("@katsu-finance/periphery-v3/package.json");
 
 export const V3_CORE_VERSION = coreVersion;
 export const V3_PERIPHERY_VERSION = peripheryVersion;
@@ -49,7 +49,6 @@ export const WRAPPED_NATIVE_TOKEN_PER_NETWORK: { [network: string]: string } = {
   [eHarmonyNetwork.main]: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
   [ePolygonNetwork.polygon]: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
   [eStoryNetwork.story]: "0x1516000000000000000000000000000000000000", // todo change to native token
-  [eStoryNetwork.storyTestnet]: "0x1514000000000000000000000000000000000000",
 };
 
 export const ZERO_BYTES_32 =

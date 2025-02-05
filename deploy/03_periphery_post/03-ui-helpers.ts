@@ -22,7 +22,7 @@ const func: DeployFunction = async function ({
 
   let chainlinkAggregatorProxyAddress;
   let chainlinkEthUsdAggregatorProxyAddress;
-  if (hre.network.name =="story-testnet") {
+  if (hre.network.name =="story-testnet" || hre.network.name =="hardhat") {
     chainlinkAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
     chainlinkEthUsdAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
   }else {
@@ -31,6 +31,7 @@ const func: DeployFunction = async function ({
   }
   console.log("chainlinkAggregatorProxyAddress", chainlinkAggregatorProxyAddress);
   console.log("chainlinkEthUsdAggregatorProxyAddress", chainlinkEthUsdAggregatorProxyAddress);
+
   // if (!chainlinkAggregatorProxy[network]) {
   //   console.log(
   //     '[Deployments] Skipping the deployment of UiPoolDataProvider due missing constant "chainlinkAggregatorProxy" configuration at ./helpers/constants.ts'

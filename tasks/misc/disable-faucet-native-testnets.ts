@@ -17,7 +17,7 @@ task(
 
   const wrappedTokenGatewayV3 = await getWrappedTokenGateway();
 
-  const wrappedTokenAddress = await wrappedTokenGatewayV3.getWIPAddress();
+  const wrappedTokenAddress = await wrappedTokenGatewayV3.getWETHAddress();
 
   console.log(
     `Faucet contract to disable minting for asset ${wrappedTokenAddress}`

@@ -5,7 +5,7 @@ import {
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { MARKET_NAME } from "../helpers/env";
-import { getPoolConfiguratorProxy, waitForTx, getAaveOracle, getMintableERC20 } from "../helpers";
+import { getPoolConfiguratorProxy, waitForTx, getAaveOracle, getMintableERC20, getMockAggregator } from "../helpers";
 
 /**
  * The following script runs after the deployment starts
@@ -49,6 +49,7 @@ const func: DeployFunction = async function ({
 
     const aaveOracle = await getAaveOracle();
     const daiToken = await getMintableERC20((await deployments.get("DAI-TestnetMintableERC20-story")).address);
+    const daiAggregator = await getMockAggregator((await deployments.get("DAI-TestnetPriceAggregator-story")).address);
     const wipToken = await getMintableERC20((await deployments.get("WIP-TestnetMintableERC20-story")).address);
     const daiAToken = await getMintableERC20((await deployments.get("DAI-AToken-story")).address);
     const decimal = await daiAToken.decimals();
@@ -56,8 +57,11 @@ const func: DeployFunction = async function ({
 
     console.log("dai price",daiToken.address);
     console.log("aaveOracle address", aaveOracle.address)
-    console.log("dai price",await aaveOracle.getAssetPrice(daiToken.address));
+    console.log("dai price before",await aaveOracle.getAssetPrice(daiToken.address));
     console.log("wip price",await aaveOracle.getAssetPrice(wipToken.address));
+    // await daiAggregator.updatePrice("130000000");
+    // console.log("dai price after",await aaveOracle.getAssetPrice(daiToken.address));
+
   }
 
   if (process.env.TRANSFER_OWNERSHIP === "true") {
