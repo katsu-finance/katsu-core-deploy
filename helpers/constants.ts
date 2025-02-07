@@ -8,7 +8,8 @@ import {
   eHarmonyNetwork,
   eOptimismNetwork,
   ePolygonNetwork,
-  eStoryNetwork
+  eStoryNetwork,
+  eMonadNetwork,
 } from "./types";
 
 const {
@@ -49,6 +50,7 @@ export const WRAPPED_NATIVE_TOKEN_PER_NETWORK: { [network: string]: string } = {
   [eHarmonyNetwork.main]: "0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a",
   [ePolygonNetwork.polygon]: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
   [eStoryNetwork.story]: "0x1516000000000000000000000000000000000000", // todo change to native token
+  [eMonadNetwork.monad]: "0x1516000000000000000000000000000000000000", // todo change to native token
 };
 
 export const ZERO_BYTES_32 =
@@ -58,8 +60,10 @@ export const MOCK_CHAINLINK_AGGREGATORS_PRICES: { [key: string]: string } = {
   AAVE: parseUnits("300", 8).toString(),
   WETH: parseUnits("4000", 8).toString(),
   WIP: parseUnits("10", 8).toString(),
+  WMON: parseUnits("10", 8).toString(),
   ETH: parseUnits("4000", 8).toString(),
   IP: parseUnits("10", 8).toString(),
+  MON: parseUnits("10", 8).toString(),
   DAI: parseUnits("1", 8).toString(),
   USDC: parseUnits("1", 8).toString(),
   USDT: parseUnits("1", 8).toString(),

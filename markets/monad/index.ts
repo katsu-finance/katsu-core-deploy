@@ -1,4 +1,4 @@
-import { eEthereumNetwork, eStoryNetwork, IAaveConfiguration,
+import { eEthereumNetwork, eMonadNetwork, IAaveConfiguration,
   TransferStrategy,
   AssetType, } from "./../../helpers/types";
 import { ZERO_ADDRESS } from "../../helpers";
@@ -6,7 +6,7 @@ import {
   strategyDAI,
   strategyUSDC,
   strategyWBTC,
-  strategyWIP,
+  strategyWMON,
   strategyUSDT,
   strategyWETH,
 } from "./reservesConfigs";
@@ -17,10 +17,10 @@ import {
 } from "./rateStrategies";
 import { AaveMarket } from "../aave/index";
 
-export const StoryConfig: IAaveConfiguration = {
+export const MonadConfig: IAaveConfiguration = {
   ...AaveMarket,
   MarketId: "Katsu Market",
-  WrappedNativeTokenSymbol: "WIP",
+  WrappedNativeTokenSymbol: "WMON",
   ATokenNamePrefix: "Katsu",
   StableDebtTokenNamePrefix: "Katsu",
   VariableDebtTokenNamePrefix: "Katsu",
@@ -30,12 +30,12 @@ export const StoryConfig: IAaveConfiguration = {
     DAI: strategyDAI,
     USDC: strategyUSDC,
     WBTC: strategyWBTC,
-    WIP: strategyWIP,
+    WMON: strategyWMON,
     USDT: strategyUSDT,
     WETH: strategyWETH,
   },
   ChainlinkAggregator: {
-    [eStoryNetwork.story]: {
+    [eMonadNetwork.monad]: {
       USDC: ZERO_ADDRESS,
       DAI: ZERO_ADDRESS,
       WBTC: ZERO_ADDRESS,
@@ -44,18 +44,18 @@ export const StoryConfig: IAaveConfiguration = {
     },
   },
   ReserveAssets: {
-    [eStoryNetwork.story]: {
+    [eMonadNetwork.monad]: {
       DAI: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
       USDC: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
       WBTC: "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f",
-      WIP: "0x1516000000000000000000000000000000000000",
+      WMON: "0x1516000000000000000000000000000000000000",
       USDT: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
     },
-    [eStoryNetwork.storyTestnet]: {
+    [eMonadNetwork.monadTestnet]: {
       DAI: ZERO_ADDRESS,
       USDC: ZERO_ADDRESS,
       WBTC: ZERO_ADDRESS,
-      WIP: ZERO_ADDRESS,
+      WMON: ZERO_ADDRESS,
       USDT: ZERO_ADDRESS,
       WETH: ZERO_ADDRESS,
     },
@@ -73,7 +73,7 @@ export const StoryConfig: IAaveConfiguration = {
   IncentivesConfig: {
     enabled: {
       [eEthereumNetwork.hardhat]: true,
-      [eStoryNetwork.storyTestnet]: true,
+      [eMonadNetwork.monadTestnet]: true,
     },
     rewards: {
       [eEthereumNetwork.hardhat]: {
@@ -82,7 +82,7 @@ export const StoryConfig: IAaveConfiguration = {
         BAL: ZERO_ADDRESS,
         StkAave: ZERO_ADDRESS,
       },
-      [eStoryNetwork.storyTestnet]: {
+      [eMonadNetwork.monadTestnet]: {
         CRV: ZERO_ADDRESS,
         REW: ZERO_ADDRESS,
         BAL: ZERO_ADDRESS,
@@ -95,4 +95,4 @@ export const StoryConfig: IAaveConfiguration = {
   },
 };
 
-export default StoryConfig;
+export default MonadConfig;

@@ -1,12 +1,16 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { COMMON_DEPLOY_PARAMS } from "../../helpers/env";
+import { COMMON_DEPLOY_PARAMS, MARKET_NAME} from "../../helpers/env";
 import {
   chainlinkAggregatorProxy,
   chainlinkEthUsdAggregatorProxy,
 } from "../../helpers/constants";
-import { eNetwork } from "../../helpers";
+import { eNetwork, TESTNET_PRICE_AGGR_PREFIX } from "../../helpers";
 import { verify } from "../../helpers/verify";
+import {
+  ConfigNames,
+  loadPoolConfig,
+} from "./../../helpers/market-config-helpers";
 
 const func: DeployFunction = async function ({
   getNamedAccounts,
@@ -20,11 +24,13 @@ const func: DeployFunction = async function ({
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
 
+  const poolConfig = loadPoolConfig(MARKET_NAME as ConfigNames);
+
   let chainlinkAggregatorProxyAddress;
   let chainlinkEthUsdAggregatorProxyAddress;
-  if (hre.network.name =="story-testnet" || hre.network.name =="hardhat") {
-    chainlinkAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
-    chainlinkEthUsdAggregatorProxyAddress = (await deployments.get("WIP-TestnetPriceAggregator-story")).address;
+  if (hre.network.name =="story-testnet" || hre.network.name =="monad-testnet" || hre.network.name =="hardhat") {
+    chainlinkAggregatorProxyAddress = (await deployments.get(`${poolConfig.WrappedNativeTokenSymbol}${TESTNET_PRICE_AGGR_PREFIX}`)).address;
+    chainlinkEthUsdAggregatorProxyAddress = (await deployments.get(`${poolConfig.WrappedNativeTokenSymbol}${TESTNET_PRICE_AGGR_PREFIX}`)).address;
   }else {
     chainlinkAggregatorProxyAddress = chainlinkAggregatorProxy[network];
     chainlinkEthUsdAggregatorProxyAddress = chainlinkEthUsdAggregatorProxy[network];

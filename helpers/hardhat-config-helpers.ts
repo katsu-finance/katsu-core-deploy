@@ -13,6 +13,7 @@ import {
   eOptimismNetwork,
   eBaseNetwork,
   eStoryNetwork,
+  eMonadNetwork,
 } from "./types";
 
 require("dotenv").config();
@@ -104,6 +105,9 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
 
   [eStoryNetwork.storyTestnet]: `https://rpc.odyssey.storyrpc.io`,
   [eStoryNetwork.story]: `https://mainnet.storyrpc.io`,
+
+  [eMonadNetwork.monadTestnet]: `https://testnet-rpc.monad.xyz`,
+  [eMonadNetwork.monad]: `https://mainnet.storyrpc.io`, // TODO: change to monad mainnet
 };
 
 export const LIVE_NETWORKS: iParamsPerNetwork<boolean> = {
@@ -116,6 +120,7 @@ export const LIVE_NETWORKS: iParamsPerNetwork<boolean> = {
   [eOptimismNetwork.main]: true,
   [eBaseNetwork.base]: true,
   [eStoryNetwork.story]: true,
+  [eMonadNetwork.monad]: true,
 };
 
 const GAS_PRICE_PER_NET: iParamsPerNetwork<string | number> = {

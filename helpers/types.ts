@@ -1,4 +1,4 @@
-import { IParaSwapAugustus } from './../typechain/@hedy_chu/periphery-v3/contracts/adapters/paraswap/interfaces/IParaSwapAugustus';
+import { IParaSwapAugustus } from './../typechain/@katsu-finance/periphery-v3/contracts/adapters/paraswap/interfaces/IParaSwapAugustus';
 import { bytes } from './../node_modules/@scure/base/index';
 import { BigNumber, BigNumberish, Signer, BytesLike } from "ethers/lib/ethers";
 import { Deployment } from "hardhat-deploy/types";
@@ -20,7 +20,8 @@ export type eNetwork =
   | eFantomNetwork
   | eOptimismNetwork
   | eTenderlyNetwork
-  | eStoryNetwork
+  | eStoryNetwork 
+  | eMonadNetwork
   | eBaseNetwork;
 
 type eTenderlyNetwork = "tenderly";
@@ -81,6 +82,11 @@ export enum eHarmonyNetwork {
 export enum eStoryNetwork {
   story = "story",
   storyTestnet = "story-testnet",
+}
+
+export enum eMonadNetwork {
+  monad = "monad",
+  monadTestnet = "monad-testnet",
 }
 
 export enum EthereumNetworkNames {
