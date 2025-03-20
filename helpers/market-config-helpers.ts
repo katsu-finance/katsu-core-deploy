@@ -11,6 +11,7 @@ import {
   ICommonConfiguration,
   SubTokenOutput,
   AssetType,
+  eStoryNetwork,
 } from "./types";
 import AaveMarket from "../markets/aave";
 import EthereumV3Config from "../markets/ethereum";
@@ -22,12 +23,15 @@ import PolygonMarket from "../markets/polygon";
 import OptimisticConfig from "../markets/optimistic";
 import ArbitrumConfig from "../markets/arbitrum";
 import BaseConfig from "../markets/base";
+import StoryConfig from "../markets/story";
+import MonadConfig from "../markets/monad";
 import { isValidAddress } from "./utilities/utils";
 import { AaveProtocolDataProvider } from "../typechain";
 import {
   ATOKEN_PREFIX,
   STABLE_DEBT_PREFIX,
   TESTNET_PRICE_AGGR_PREFIX,
+  TESTNET_PRICE_PYTH_PREFIX,
   TESTNET_REWARD_TOKEN_PREFIX,
   TESTNET_TOKEN_PREFIX,
   TREASURY_PROXY_ID,
@@ -52,6 +56,8 @@ export enum ConfigNames {
   Ethereum = "Ethereum",
   Base = "Base",
   baseGoerli = "base-goerli",
+  Story = "story",
+  Monad = "monad",
 }
 
 export const getParamPerNetwork = <T>(
@@ -119,6 +125,10 @@ export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
       return EthereumV3Config;
     case ConfigNames.Base:
       return BaseConfig;
+    case ConfigNames.Story:
+      return StoryConfig; 
+    case ConfigNames.Monad:
+      return MonadConfig;
     default:
       throw new Error(
         `Unsupported pool configuration: ${configName} is not one of the supported configs ${Object.values(

@@ -12,6 +12,8 @@ import {
   eFantomNetwork,
   eOptimismNetwork,
   eBaseNetwork,
+  eStoryNetwork,
+  eMonadNetwork,
 } from "./types";
 
 require("dotenv").config();
@@ -50,6 +52,8 @@ export const getAlchemyKey = (net: eNetwork) => {
       return process.env.SEPOLIA_ALCHEMY_KEY || ALCHEMY_KEY;
     case eBaseNetwork.base:
       return process.env.BASE_ALCHEMY_KEY || ALCHEMY_KEY;
+    case eStoryNetwork.story:
+      return process.env.STORY_ALCHEMY_KEY || ALCHEMY_KEY;
     default:
       return ALCHEMY_KEY;
   }
@@ -71,7 +75,7 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
     ePolygonNetwork.polygon
   )}`,
   [eArbitrumNetwork.arbitrum]: `https://arb1.arbitrum.io/rpc`,
-  [eArbitrumNetwork.arbitrumTestnet]: `https://rinkeby.arbitrum.io/rpc`,
+  [eArbitrumNetwork.arbitrumTestnet]: `https://arbitrum-sepolia-rpc.publicnode.com`,
   [eEthereumNetwork.rinkeby]: `https://eth-rinkeby.alchemyapi.io/v2/${getAlchemyKey(
     eEthereumNetwork.rinkeby
   )}`,
@@ -98,6 +102,12 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
   [eBaseNetwork.base]: `https://base-mainnet.g.alchemy.com/v2/${getAlchemyKey(
     eBaseNetwork.base
   )}`,
+
+  [eStoryNetwork.storyTestnet]: `https://rpc.odyssey.storyrpc.io`,
+  [eStoryNetwork.story]: `https://mainnet.storyrpc.io`,
+
+  [eMonadNetwork.monadTestnet]: `https://testnet-rpc.monad.xyz`,
+  [eMonadNetwork.monad]: `https://mainnet.storyrpc.io`, // TODO: change to monad mainnet
 };
 
 export const LIVE_NETWORKS: iParamsPerNetwork<boolean> = {
@@ -109,6 +119,8 @@ export const LIVE_NETWORKS: iParamsPerNetwork<boolean> = {
   [eFantomNetwork.main]: true,
   [eOptimismNetwork.main]: true,
   [eBaseNetwork.base]: true,
+  [eStoryNetwork.story]: true,
+  [eMonadNetwork.monad]: true,
 };
 
 const GAS_PRICE_PER_NET: iParamsPerNetwork<string | number> = {
